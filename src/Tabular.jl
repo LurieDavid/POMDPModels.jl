@@ -62,9 +62,9 @@ n_observations(p::TabularProblem) = size(p.O, 1)
 
 observations(p::TabularPOMDP) = 1:n_observations(p)
 
-observation(p::TabularPOMDP, a::Int64, sp::Int64) = DiscreteDistribution(view(p.O, :, a, sp))
+observation(p::TabularPOMDP, a::Int64, sp::Int64) = [0.2;0.8]
 
 obsindex(p::TabularPOMDP, o::Int64) = o
 
 # deprecated in POMDPs v0.9
-POMDPs.initialstate_distribution(p::TabularProblem) = DiscreteDistribution(ones(length(states(p)))./length(states(p)))
+POMDPs.initialstate_distribution(p::TabularProblem) = [0.2;0.8]
