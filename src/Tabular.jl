@@ -10,6 +10,7 @@ mutable struct TabularMDP <: MDP{Int64, Int64}
     T::Array{Float64, 3} # SPxAxS
     R::Matrix{Float64} # SxA
     discount::Float64
+    InitialTable::Array{Float64}
 end
 
 @doc raw"""
@@ -26,6 +27,7 @@ mutable struct TabularPOMDP <: POMDP{Int64, Int64, Int64}
     R::Matrix{Float64} # SxA
     O::Array{Float64, 3} # OxAxSP
     discount::Float64
+    InitialTable::Array{Float64}
 end
 
 const TabularProblem = Union{TabularMDP, TabularPOMDP}
@@ -55,7 +57,7 @@ transition(p::TabularProblem, s::Int64, a::Int64) = DiscreteDistribution(view(p.
 
 reward(prob::TabularProblem, s::Int64, a::Int64) = prob.R[s, a]
 
-initialstate(p::TabularProblem) = DiscreteDistribution([0.4;0.6])
+initialstate(p::TabularProblem) = DiscreteDistribution(InitialTable)
 
 # POMDP only methods
 n_observations(p::TabularProblem) = size(p.O, 1)
@@ -67,4 +69,4 @@ observation(p::TabularPOMDP, a::Int64, sp::Int64) = DiscreteDistribution(view(p.
 obsindex(p::TabularPOMDP, o::Int64) = o
 
 # deprecated in POMDPs v0.9
-POMDPs.initialstate_distribution(p::TabularProblem) = DiscreteDistribution([0.4;0.6])
+POMDPs.initialstate_distribution(p::TabularProblem) = DiscreteDistribution(InitialTable)
